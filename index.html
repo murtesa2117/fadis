@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islam Youth Group</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('background.jpg'); /* Background image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .welcome-banner {
+            background-color: rgba(0, 0, 255, 0.7);
+            padding: 15px;
+            text-align: center;
+            color: white;
+            font-size: 1.5em;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .button {
+            margin: 20px;
+            padding: 15px;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            color: white;
+        }
+        .privacy-button {
+            background-image: url('button_image.png'); /* Image for the button */
+            background-size: cover;
+            background-position: center;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: none;
+        }
+        .register-button {
+            background-color: darkblue;
+            padding: 15px 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-banner">
+        Welcome to Islam Youth Group
+    </div>
+
+    <div class="button-container">
+        <!-- Image button for password protection -->
+        <button class="button privacy-button" onclick="showPasswordPrompt()"> </button>
+
+        <!-- Register button that links to the registration form -->
+        <button class="button register-button" onclick="window.location.href='https://form.jotform.com/242356435496565'">Register</button>
+    </div>
+
+    <script>
+        function showPasswordPrompt() {
+            const password = prompt("Enter the code or password:");
+            if (password === "All@fadis2117") {
+                showPrivacyPage();
+            } else {
+                alert("Incorrect password. Please try again.");
+            }
+        }
+
+        function showPrivacyPage() {
+            document.body.innerHTML = `
+                <div style="padding: 20px; background-color: rgba(255, 255, 255, 0.9); margin: 50px;">
+                    <h2>Privacy and Rules</h2>
+                    <p>1. Respect all members and their opinions according to Islamic teachings.</p>
+                    <p>2. Content shared must be in line with Quranic and prophetic teachings (Sunnah).</p>
+                    <p>3. Maintain confidentiality and trust within the group. Avoid sharing private information.</p>
+                    <p>4. Discussions should promote unity, harmony, and positive knowledge among the group members.</p>
+                    <p>5. Any form of hate speech, disrespect, or backbiting is strictly prohibited.</p>
+                    <p>6. Uphold Islamic manners in all interactions, whether verbal or written.</p>
+                    <br>
+                    <button onclick="window.location.href='https://docs.google.com/spreadsheets/d/1cIB-l6ACoFWgbOtoFfK2oBEZXOsUO6DDtP-lCnBQCEg/edit?gid=952276604#gid=952276604'">Users Who Registered</button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
