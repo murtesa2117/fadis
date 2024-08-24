@@ -5,14 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Islam Youth Group</title>
     <style>
-        /* Your existing styles */
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-image: url('background.jpg'); /* Background image */
+            background: url('background.jpg') no-repeat center center fixed;
             background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
         }
         .welcome-banner {
             background-color: rgba(0, 0, 255, 0.7);
@@ -20,6 +17,7 @@
             text-align: center;
             color: white;
             font-size: 1.5em;
+            position: relative;
         }
         .button-container {
             text-align: center;
@@ -34,13 +32,14 @@
             color: white;
         }
         .privacy-button {
-            background-image: url('button_image.png'); /* Image for the button */
+            background-image: url('button_image.png');
             background-size: cover;
             background-position: center;
             width: 250px;
             height: 250px;
             border-radius: 50%;
             border: none;
+            cursor: pointer;
         }
         .register-button {
             background-color: darkblue;
@@ -74,7 +73,7 @@
             top: 0;
             right: 25px;
             font-size: 36px;
-            margin-left: 50px;
+            cursor: pointer;
         }
         #main {
             transition: margin-left .5s;
@@ -84,6 +83,31 @@
             position: absolute;
             top: 10px;
             right: 10px;
+        }
+        #ideaBox {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin: 20px;
+        }
+        #ideaBox textarea {
+            width: 100%;
+            height: 100px;
+        }
+        #userMessages {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin: 20px;
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar a {
+                font-size: 18px;
+            }
+            .button {
+                font-size: 1em;
+            }
         }
     </style>
 </head>
@@ -100,23 +124,39 @@
     <!-- Sidebar -->
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#" onclick="showAboutUs()">About Us</a>
-        <a href="#" onclick="showContact()">Contact Us</a>
-        <a href="#" onclick="showGiveIdea()">Give Your Idea</a>
+        <a href="#" onclick="showAboutUs()"></a>
+        <a href="#" onclick="showContact()"></a>
+        <a href="#" onclick="showGiveIdea()"></a>
     </div>
 
     <div id="main">
         <div class="welcome-banner">
-            <span id="welcomeText">Welcome to Islam Youth Group</span>
+            <span id="welcomeMessage"></span>
             <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
         </div>
 
         <div class="button-container">
             <!-- Image button for password protection -->
-            <button class="button privacy-button" onclick="showPasswordPrompt()"> </button>
+            <button class="button privacy-button" onclick="showPasswordPrompt()"></button>
 
             <!-- Register button that links to the terms and conditions page -->
-            <button class="button register-button" onclick="showTerms()">Register</button>
+            <button class="button register-button" onclick="showTerms()"></button>
+        </div>
+
+        <!-- Idea Box -->
+        <div id="ideaBox">
+            <h2 id="submitIdeaHeading"></h2>
+            <label for="userName" id="nameLabel"></label><br>
+            <input type="text" id="userName" name="userName" required><br><br>
+            <label for="userIdea" id="ideaLabel"></label><br>
+            <textarea id="userIdea" name="userIdea" required></textarea><br><br>
+            <button onclick="submitIdea()"></button>
+        </div>
+
+        <!-- User Messages -->
+        <div id="userMessages">
+            <h2 id="userMessagesHeading"></h2>
+            <div id="messagesContainer"></div>
         </div>
     </div>
 
@@ -128,22 +168,67 @@
 
         function closeNav() {
             document.getElementById("mySidebar").style.width = "0";
-            document.getElementById("main").style.marginLeft= "0";
+            document.getElementById("main").style.marginLeft = "0";
         }
 
         function translatePage(lang) {
             const translations = {
                 en: {
-                    welcomeText: 'Welcome to Islam Youth Group'
+                    welcomeMessage: "Welcome to Islam Youth Group",
+                    aboutUs: "About Us",
+                    contactUs: "Contact Us",
+                    giveYourIdea: "Give Your Idea",
+                    submitIdeaHeading: "Submit Your Idea",
+                    nameLabel: "Name:",
+                    ideaLabel: "Your Idea:",
+                    submitButton: "Submit Idea",
+                    termsHeading: "Terms and Conditions",
+                    agreeText: "I agree to all terms and conditions",
+                    proceedButton: "Proceed to Registration",
+                    userMessagesHeading: "User Messages"
                 },
                 ar: {
-                    welcomeText: 'مرحباً بكم في مجموعة الشباب الإسلامية'
+                    welcomeMessage: "مرحبا بكم في مجموعة الشباب الإسلامي",
+                    aboutUs: "معلومات عنا",
+                    contactUs: "اتصل بنا",
+                    giveYourIdea: "قدم فكرتك",
+                    submitIdeaHeading: "قدم فكرتك",
+                    nameLabel: "الاسم:",
+                    ideaLabel: "فكرتك:",
+                    submitButton: "أرسل الفكرة",
+                    termsHeading: "الشروط والأحكام",
+                    agreeText: "أوافق على جميع الشروط والأحكام",
+                    proceedButton: "الانتقال إلى التسجيل",
+                    userMessagesHeading: "رسائل المستخدمين"
                 },
                 om: {
-                    welcomeText: 'Baga nagaan dhuftan Gara Garee Dhalloota Islaamaa'
+                    welcomeMessage: "Baga nagaan dhuftan garee Dargaggoota Islaamaa",
+                    aboutUs: "Oduu keenya",
+                    contactUs: "Nu qunnami",
+                    giveYourIdea: "Yaada Keessan Kenni",
+                    submitIdeaHeading: "Yaada Kee Kenni",
+                    nameLabel: "Maqaa:",
+                    ideaLabel: "Yaada Kee:",
+                    submitButton: "Yaada Kenni",
+                    termsHeading: "Seerota fi Shuruukota",
+                    agreeText: "Seerota fi shuruukota hunda waliin waliigalu",
+                    proceedButton: "Galmeessi itti fufaa",
+                    userMessagesHeading: "Ergaa Userota"
                 }
             };
-            document.getElementById('welcomeText').innerText = translations[lang].welcomeText;
+
+            const selectedLang = translations[lang];
+            document.getElementById("welcomeMessage").innerText = selectedLang.welcomeMessage;
+            document.querySelector(".sidebar a:nth-child(2)").innerText = selectedLang.aboutUs;
+            document.querySelector(".sidebar a:nth-child(3)").innerText = selectedLang.contactUs;
+            document.querySelector(".sidebar a:nth-child(4)").innerText = selectedLang.giveYourIdea;
+            document.getElementById("submitIdeaHeading").innerText = selectedLang.submitIdeaHeading;
+            document.getElementById("nameLabel").innerText = selectedLang.nameLabel;
+            document.getElementById("ideaLabel").innerText = selectedLang.ideaLabel;
+            document.querySelector("#ideaBox button").innerText = selectedLang.submitButton;
+            document.querySelector(".register-button").innerText = selectedLang.proceedButton;
+            document.getElementById("userMessagesHeading").innerText = selectedLang.userMessagesHeading;
+            document.getElementById("agreeText").innerText = selectedLang.agreeText;
         }
 
         function showPasswordPrompt() {
@@ -157,102 +242,75 @@
 
         function showPrivacyPage() {
             document.body.innerHTML = `
-                <div style="padding: 20px; background-color: rgba(255, 255, 255, 0.9); margin: 50px;">
-                    <h2 id="privacyTitle">Privacy and Rules</h2>
-                    <p id="rule1">1. Respect all members and their opinions according to Islamic teachings.</p>
-                    <p id="rule2">2. Content shared must be in line with Quranic and prophetic teachings (Sunnah).</p>
-                    <p id="rule3">3. Maintain confidentiality and trust within the group. Avoid sharing private information.</p>
-                    <p id="rule4">4. Discussions should promote unity, harmony, and positive knowledge among the group members.</p>
-                    <p id="rule5">5. Any form of hate speech, disrespect, or backbiting is strictly prohibited.</p>
-                    <p id="rule6">6. Uphold Islamic manners in all interactions, whether verbal or written.</p>
-                    <br>
-                    <h3 id="userMessagesTitle">User Messages</h3>
-                    <div id="userMessages"></div>
-                    <button onclick="window.location.href='https://docs.google.com/spreadsheets/d/1cIB-l6ACoFWgbOtoFfK2oBEZXOsUO6DDtP-lCnBQCEg/edit?gid=952276604#gid=952276604'">Users Who Registered</button>
+                <div style="padding: 20px; background-color: rgba(255, 255, 255, 0.9);">
+                    <h2>Privacy Page</h2>
+                    <p>This is the privacy page with details about data handling, user privacy, and the app’s mission for learning, growth, and positive interaction.</p>
+                    <button onclick="showUserMessages()">User Messages</button>
+                    <button onclick="showUsers()">Users Who Registered</button>
                 </div>
             `;
-            displayUserMessages();
-            translatePage(document.querySelector('#languageSelector select').value);
+        }
+
+        function showUserMessages() {
+            const password = prompt("Enter admin password:");
+            if (password === "All@fadis2117") {
+                let messages = JSON.parse(localStorage.getItem('userMessages')) || [];
+                let messagesHtml = messages.map(msg => `<p>${msg}</p>`).join('');
+                document.body.innerHTML += `
+                    <div style="background-color: rgba(0, 128, 0, 0.9); padding: 20px; color: white;">
+                        <h2>User Messages</h2>
+                        <div id="messagesContainer">${messagesHtml}</div>
+                        <textarea id="newMessage" placeholder="Add a new message"></textarea>
+                        <button onclick="addMessage()">Add Message</button>
+                    </div>
+                `;
+            } else {
+                alert("Incorrect password. Please try again.");
+            }
+        }
+
+        function addMessage() {
+            const newMessage = document.getElementById('newMessage').value;
+            if (newMessage.trim()) {
+                let messages = JSON.parse(localStorage.getItem('userMessages')) || [];
+                messages.push(newMessage);
+                localStorage.setItem('userMessages', JSON.stringify(messages));
+                document.getElementById('messagesContainer').innerHTML += `<p>${newMessage}</p>`;
+                document.getElementById('newMessage').value = '';
+            } else {
+                alert("Message cannot be empty.");
+            }
+        }
+
+        function showUsers() {
+            const password = prompt("Enter admin password:");
+            if (password === "All@fadis2117") {
+                window.open("https://docs.google.com/spreadsheets/d/1p5t0TnLPIJUp6u37WjYOyjXkK1NkSRAuD1dbYUEoY9E/edit#gid=0", "_blank");
+            } else {
+                alert("Incorrect password. Please try again.");
+            }
         }
 
         function showTerms() {
-            document.body.innerHTML = `
-                <div style="padding: 20px; background-color: rgba(255, 255, 255, 0.9); margin: 50px;">
-                    <h2 id="termsTitle">Terms and Conditions</h2>
-                    <p id="term1">1. All members must adhere to the principles of Islamic Sharia.</p>
-                    <p id="term2">2. Respect towards fellow members is mandatory. Disagreements must be handled with dignity and in line with Islamic teachings.</p>
-                    <p id="term3">3. Content shared must be educational, beneficial, and aligned with the Quran and Sunnah.</p>
-                    <p id="term4">4. Any form of offensive language, disrespect, or unethical behavior will not be tolerated.</p>
-                    <p id="term5">5. Members must prioritize promoting positive Islamic knowledge and maintaining unity within the group.</p>
-                    <p id="term6">6. Confidentiality and privacy of all discussions must be respected.</p>
-                    <p id="term7">7. Uphold Islamic etiquette in all interactions.</p>
-                    <br>
-                    <input type="checkbox" id="agreeCheckbox" onclick="toggleRegisterButton()"> <span id="agreeText">I agree to all terms and conditions</span>
-                    <br><br>
-                    <button id="proceedButton" style="display:none;" onclick="window.location.href='https://form.jotform.com/242356435496565'"><span id="proceedText">Proceed to Registration</span></button>
-                </div>
-            `;
-            translatePage(document.querySelector('#languageSelector select').value);
-        }
-
-        function toggleRegisterButton() {
-            const checkbox = document.getElementById("agreeCheckbox");
-            const proceedButton = document.getElementById("proceedButton");
-            proceedButton.style.display = checkbox.checked ? "inline-block" : "none";
+            alert("Terms and conditions page is under development.");
         }
 
         function showAboutUs() {
-            alert('About Us: Islam Youth Group is a community of young Muslims dedicated to spiritual growth, knowledge sharing, and upholding Islamic values. We aim to foster unity, understanding, and active participation in the Islamic way of life.');
+            alert("About Us section is under development.");
         }
 
         function showContact() {
-            const callButton = document.createElement("button");
-            callButton.textContent = "Call Now";
-            callButton.style.padding = "15px";
-            callButton.style.fontSize = "20px";
-            callButton.style.backgroundColor = "green";
-            callButton.style.color = "white";
-            callButton.style.border = "none";
-            callButton.style.borderRadius = "5px";
-            callButton.onclick = function () {
-                window.location.href = "tel:+1234567890";
-            };
-            document.body.innerHTML = '';
-            document.body.appendChild(callButton);
+            alert("Contact Us section is under development.");
         }
 
         function showGiveIdea() {
-            document.body.innerHTML = `
-                <div style="padding: 20px; background-color: rgba(255, 255, 255, 0.9); margin: 50px;">
-                    <h2 id="giveIdeaTitle">Give Your Idea</h2>
-                    <form id="ideaForm">
-                        <label for="ideaInput">Your Idea:</label><br>
-                        <textarea id="ideaInput" rows="4" cols="50"></textarea><br><br>
-                        <button type="button" onclick="submitIdea()">Submit</button>
-                    </form>
-                    <br>
-                    <button onclick="window.location.href='index.html'">Back to Home</button>
-                </div>
-            `;
-            translatePage(document.querySelector('#languageSelector select').value);
+            document.getElementById('ideaBox').style.display = 'block';
         }
 
         function submitIdea() {
-            alert("Thank you for your idea! It has been submitted.");
-            window.location.href = 'index.html';
-        }
-
-        function displayUserMessages() {
-            // Here you would dynamically display user messages from storage
-            // This is just a placeholder implementation
-            const userMessages = [
-                "Sample message from user 1",
-                "Sample message from user 2"
-            ];
-            const userMessagesDiv = document.getElementById('userMessages');
-            userMessagesDiv.innerHTML = userMessages.join('<br>');
+            alert("Thank you for your idea. We will review it.");
+            document.getElementById('ideaBox').style.display = 'none';
         }
     </script>
 </body>
 </html>
-
