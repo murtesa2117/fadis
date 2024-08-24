@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms and Conditions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            margin: 50px;
+            border-radius: 8px;
+        }
+        #languageSelector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="languageSelector">
+        <select onchange="translatePage(this.value)">
+            <option value="en">English</option>
+            <option value="ar">Arabic</option>
+            <option value="om">Afaan Oromoo</option>
+        </select>
+    </div>
+    <div class="container">
+        <h2 id="termsTitle">Terms and Conditions</h2>
+        <p id="term1">1. All members must adhere to the principles of Islamic Sharia.</p>
+        <p id="term2">2. Respect towards fellow members is mandatory. Disagreements must be handled with dignity and in line with Islamic teachings.</p>
+        <p id="term3">3. Content shared must be educational, beneficial, and aligned with the Quran and Sunnah.</p>
+        <p id="term4">4. Any form of offensive language, disrespect, or unethical behavior will not be tolerated.</p>
+        <p id="term5">5. Members must prioritize promoting positive Islamic knowledge and maintaining unity within the group.</p>
+        <p id="term6">6. Confidentiality and privacy of all discussions must be respected.</p>
+        <p id="term7">7. Uphold Islamic etiquette in all interactions.</p>
+        <input type="checkbox" id="agreeCheckbox" onclick="toggleRegisterButton()"> <span id="agreeText">I agree to all terms and conditions</span>
+        <br><br>
+        <button id="proceedButton" style="display:none;" onclick="window.location.href='https://form.jotform.com/242356435496565'"><span id="proceedText">Proceed to Registration</span></button>
+    </div>
+
+    <script>
+        function translatePage(lang) {
+            const translations = {
+                en: {
+                    termsTitle: 'Terms and Conditions',
+                    term1: '1. All members must adhere to the principles of Islamic Sharia.',
+                    term2: '2. Respect towards fellow members is mandatory. Disagreements must be handled with dignity and in line with Islamic teachings.',
+                    term3: '3. Content shared must be educational, beneficial, and aligned with the Quran and Sunnah.',
+                    term4: '4. Any form of offensive language, disrespect, or unethical behavior will not be tolerated.',
+                    term5: '5. Members must prioritize promoting positive Islamic knowledge and maintaining unity within the group.',
+                    term6: '6. Confidentiality and privacy of all discussions must be respected.',
+                    term7: '7. Uphold Islamic etiquette in all interactions.',
+                    agreeText: 'I agree to all terms and conditions',
+                    proceedText: 'Proceed to Registration'
+                },
+                ar: {
+                    termsTitle: 'الشروط والأحكام',
+                    term1: '1. يجب على جميع الأعضاء الالتزام بمبادئ الشريعة الإسلامية.',
+                    term2: '2. الاحترام تجاه الأعضاء الآخرين أمر إلزامي. يجب التعامل مع الخلافات بكرامة ووفقاً للتعاليم الإسلامية.',
+                    term3: '3. يجب أن يكون المحتوى المشترك تعليميًا ومفيدًا ومتوافقًا مع القرآن والسنة.',
+                    term4: '4. أي شكل من أشكال اللغة الهجومية أو عدم الاحترام أو السلوك غير الأخلاقي غير مقبول.',
+                    term5: '5. يجب على الأعضاء أن يعطوا الأولوية لتعزيز المعرفة الإسلامية الإيجابية والحفاظ على الوحدة داخل المجموعة.',
+                    term6: '6. يجب احترام سرية وخصوصية جميع المناقشات.',
+                    term7: '7. الحفاظ على آداب الإسلام في جميع التفاعلات.',
+                    agreeText: 'أوافق على جميع الشروط والأحكام',
+                    proceedText: 'المتابعة للتسجيل'
+                },
+                om: {
+                    termsTitle: 'Seera fi Hojii',
+                    term1: '1. Miseensonni hundi heera Islaamummaa keessatti dirqama qabaachuu qabu.',
+                    term2: '2. Walitti dhufeenya miseensotaa kabajuu dirqama. Dhiibbaan irratti marii dhugaa fi haala Islaamaa irratti hunda’uun gaggeeffamuu qaba.',
+                    term3: '3. Qabiyyeen qoodame barnoota, bu’a qabeessa ta’ee fi Qur’aana fi Sunnah waliin wal simuu qaba.',
+                    term4: '4. Jecha jibbaa, xureessuu, ykn amala mormaa hin taane waliin kabajamuu hin qabu.',
+                    term5: '5. Miseensonni ilaalcha Islaamaa gaarii fi tokkummaa keessa eeguuf yeroo kennu qabu.',
+                    term6: '6. Kafaltii fi dhuunfaatii marii hundaaf kabajamuu qaba.',
+                    term7: '7. Walitti dhufeenya keessatti akkamta Islaamaa eeguuf dirqama.',
+                    agreeText: 'Waan hundumaaf waliigaluun ani amanera',
+                    proceedText: 'Galmeessi itti fufa'
+                }
+            };
+            document.getElementById('termsTitle').innerText = translations[lang].termsTitle;
+            document.getElementById('term1').innerText = translations[lang].term1;
+            document.getElementById('term2').innerText = translations[lang].term2;
+            document.getElementById('term3').innerText = translations[lang].term3;
+            document.getElementById('term4').innerText = translations[lang].term4;
+            document.getElementById('term5').innerText = translations[lang].term5;
+            document.getElementById('term6').innerText = translations[lang].term6;
+            document.getElementById('term7').innerText = translations[lang].term7;
+            document.getElementById('agreeText').innerText = translations[lang].agreeText;
+            document.getElementById('proceedText').innerText = translations[lang].proceedText;
+        }
+
+        function toggleRegisterButton() {
+            const checkbox = document.getElementById("agreeCheckbox");
+            const proceedButton = document.getElementById("proceedButton");
+            proceedButton.style.display = checkbox.checked ? "inline-block" : "none";
+        }
+    </script>
+</body>
+</html>

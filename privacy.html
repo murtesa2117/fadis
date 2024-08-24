@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy and Rules</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            margin: 50px;
+            border-radius: 8px;
+        }
+        #languageSelector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="languageSelector">
+        <select onchange="translatePage(this.value)">
+            <option value="en">English</option>
+            <option value="ar">Arabic</option>
+            <option value="om">Afaan Oromoo</option>
+        </select>
+    </div>
+    <div class="container">
+        <h2 id="privacyTitle">Privacy and Rules</h2>
+        <p id="rule1">1. Respect all members and their opinions according to Islamic teachings.</p>
+        <p id="rule2">2. Content shared must be in line with Quranic and prophetic teachings (Sunnah).</p>
+        <p id="rule3">3. Maintain confidentiality and trust within the group. Avoid sharing private information.</p>
+        <p id="rule4">4. Discussions should promote unity, harmony, and positive knowledge among the group members.</p>
+        <p id="rule5">5. Any form of hate speech, disrespect, or backbiting is strictly prohibited.</p>
+        <p id="rule6">6. Uphold Islamic manners in all interactions, whether verbal or written.</p>
+        <h3 id="userMessagesTitle">User Messages</h3>
+        <div id="userMessages"></div>
+        <button onclick="window.location.href='https://docs.google.com/spreadsheets/d/1cIB-l6ACoFWgbOtoFfK2oBEZXOsUO6DDtP-lCnBQCEg/edit?gid=952276604#gid=952276604'">Users Who Registered</button>
+    </div>
+
+    <script>
+        function translatePage(lang) {
+            const translations = {
+                en: {
+                    privacyTitle: 'Privacy and Rules',
+                    rule1: '1. Respect all members and their opinions according to Islamic teachings.',
+                    rule2: '2. Content shared must be in line with Quranic and prophetic teachings (Sunnah).',
+                    rule3: '3. Maintain confidentiality and trust within the group. Avoid sharing private information.',
+                    rule4: '4. Discussions should promote unity, harmony, and positive knowledge among the group members.',
+                    rule5: '5. Any form of hate speech, disrespect, or backbiting is strictly prohibited.',
+                    rule6: '6. Uphold Islamic manners in all interactions, whether verbal or written.',
+                    userMessagesTitle: 'User Messages'
+                },
+                ar: {
+                    privacyTitle: 'الخصوصية والقواعد',
+                    rule1: '1. احترام جميع الأعضاء وآرائهم وفقًا للتعاليم الإسلامية.',
+                    rule2: '2. يجب أن يكون المحتوى المشترك متماشيًا مع تعاليم القرآن والسنة.',
+                    rule3: '3. الحفاظ على السرية والثقة داخل المجموعة. تجنب مشاركة المعلومات الشخصية.',
+                    rule4: '4. يجب أن تعزز المناقشات الوحدة والانسجام والمعرفة الإيجابية بين أعضاء المجموعة.',
+                    rule5: '5. أي شكل من أشكال خطاب الكراهية أو عدم الاحترام أو النميمة محظور تمامًا.',
+                    rule6: '6. الحفاظ على آداب الإسلام في جميع التفاعلات، سواء كانت لفظية أو مكتوبة.',
+                    userMessagesTitle: 'رسائل المستخدمين'
+                },
+                om: {
+                    privacyTitle: 'Kafaltii fi Seera',
+                    rule1: '1. Miseensonni hundi fi yaada isaanii kabaju qabu akka barnoota Islaamaatti.',
+                    rule2: '2. Qabiyyeen qoodame Qur’aana fi Sunnah waliin wal simuu qaba.',
+                    rule3: '3. Kafaltii fi amantii keessaa eeguu. Odeeffannoo dhuunfaa qooduu irraa fagaachuu.',
+                    rule4: '4. Mariin tokkummaa, tasgabbii fi barnoota gaarii guddisa.',
+                    rule5: '5. Jecha jibbaa, xureessuu ykn baay’ina qaawaa hin qabne gochuun waan hafe.',
+                    rule6: '6. Walitti dhufeenya keessatti akkamta Islaamaa eeguuf dirqama.',
+                    userMessagesTitle: 'Ergaa Miseensotaa'
+                }
+            };
+            document.getElementById('privacyTitle').innerText = translations[lang].privacyTitle;
+            document.getElementById('rule1').innerText = translations[lang].rule1;
+            document.getElementById('rule2').innerText = translations[lang].rule2;
+            document.getElementById('rule3').innerText = translations[lang].rule3;
+            document.getElementById('rule4').innerText = translations[lang].rule4;
+            document.getElementById('rule5').innerText = translations[lang].rule5;
+            document.getElementById('rule6').innerText = translations[lang].rule6;
+            document.getElementById('userMessagesTitle').innerText = translations[lang].userMessagesTitle;
+        }
+
+        function displayUserMessages() {
+            // Here you would dynamically display user messages from storage
+            // This is just a placeholder implementation
+            const userMessages = [
+                "Sample message from user 1",
+                "Sample message from user 2"
+            ];
+            const userMessagesDiv = document.getElementById('userMessages');
+            userMessagesDiv.innerHTML = userMessages.join('<br>');
+        }
+    </script>
+</body>
+</html>
