@@ -8,7 +8,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-image: url('background.jpg'); /* Background image */
+            background-image: url('background.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -33,7 +33,7 @@
             color: white;
         }
         .privacy-button {
-            background-image: url('button_image.png'); /* Image for the button */
+            background-image: url('button_image.png');
             background-size: cover;
             background-position: center;
             width: 250px;
@@ -75,32 +75,57 @@
             font-size: 36px;
             margin-left: 50px;
         }
+        .sidebar .language-selector {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .sidebar .language-selector:hover {
+            color: #f1f1f1;
+        }
+        .sidebar .language-dropdown {
+            display: none;
+            padding-left: 32px;
+        }
+        .sidebar .language-dropdown select {
+            font-size: 20px;
+            padding: 10px;
+        }
         #main {
             transition: margin-left .5s;
             padding: 16px;
         }
-        #languageSelector {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+        #userMessagesButton {
+            display: none;
+            margin-top: 20px;
+            background-color: green;
+            padding: 15px;
+            color: white;
+            border: none;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <!-- Language Selector -->
-    <div id="languageSelector">
-        <select onchange="translatePage(this.value)">
-            <option value="en">English</option>
-            <option value="ar">Arabic</option>
-        </select>
-    </div>
-
     <!-- Sidebar -->
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="#" onclick="showAboutUs()">About Us</a>
         <a href="#" onclick="showContact()">Contact Us</a>
         <a href="#" onclick="showGiveIdea()">Give Your Idea</a>
+        <a class="language-selector" onclick="toggleLanguageDropdown()">Language</a>
+        <div class="language-dropdown" id="languageDropdown">
+            <select onchange="changeLanguage(this.value)">
+                <option value="en">English</option>
+                <option value="om">Afaan Oromoo</option>
+                <option value="am">Amharic</option>
+                <option value="ar">Arabic</option>
+            </select>
+        </div>
     </div>
 
     <div id="main">
@@ -116,6 +141,8 @@
             <!-- Register button that links to the terms and conditions page -->
             <button class="button register-button" onclick="showTerms()">Register</button>
         </div>
+
+        <button id="userMessagesButton" onclick="showUserMessages()">User Messages</button>
     </div>
 
     <script>
@@ -129,9 +156,37 @@
             document.getElementById("main").style.marginLeft= "0";
         }
 
-        function translatePage(lang) {
-            // Implement your translation logic here
-            alert('Page will be translated to ' + lang);
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById("languageDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        function changeLanguage(lang) {
+            if (lang === "om") {
+                translatePageToOromo();
+            } else {
+                alert('Page will be translated to ' + lang);
+            }
+        }
+
+        function translatePageToOromo() {
+            document.body.innerHTML = `
+                <div style="padding: 20px; background-color: rgba(255, 255, 255, 0.9); margin: 50px;">
+                    <h2>Akkaataa Fi Heera</h2>
+                    <p>1. Miseensota hunda kabajuuf fi ilaalchaan isaanii Islaamummaa waliin walsimuu qaba.</p>
+                    <p>2. Waan qixa Qur'aanaa fi Sunnah waliin hidhata qabu qooduu.</p>
+                    <p>3. Waan sirrii fi amanamummaa qabuu keessa jiraachuu.</p>
+                    <p>4. Waan rakkinaa fi jibba miidhaa akka hin taane mirkaneessuu.</p>
+                    <p>5. Hawaasumma fi walitti dhufeenya keessatti xiyyeeffannoo qabaachuu.</p>
+                    <p>6. Aangoo Islaamummaa keessatti walitti dhufeenya gochuu.</p>
+                    <br>
+                    <h3>Ergaa Miseensotaa</h3>
+                    <div id="userMessages"></div>
+                    <button onclick="window.location.href='https://docs.google.com/spreadsheets/d/1cIB-l6ACoFWgbOtoFfK2oBEZXOsUO6DDtP-lCnBQCEg/edit?gid=952276604#gid=952276604'">Miseensota Galmeessanii</button>
+                </div>
+                <button id="backToHome" onclick="showHomePage()">Mana Gahuu</button>
+            `;
+            displayUserMessages();
         }
 
         function showPasswordPrompt() {
@@ -158,6 +213,7 @@
                     <div id="userMessages"></div>
                     <button onclick="window.location.href='https://docs.google.com/spreadsheets/d/1cIB-l6ACoFWgbOtoFfK2oBEZXOsUO6DDtP-lCnBQCEg/edit?gid=952276604#gid=952276604'">Users Who Registered</button>
                 </div>
+                <button id="userMessagesButton" style="display: inline-block;">User Messages</button>
             `;
             displayUserMessages();
         }
@@ -166,88 +222,40 @@
             document.body.innerHTML = `
                 <div style="padding: 20px; background-color: rgba(255, 255, 255, 0.9); margin: 50px;">
                     <h2>Terms and Conditions</h2>
-                    <p>1. All members must adhere to the principles of Islamic Sharia.</p>
-                    <p>2. Respect towards fellow members is mandatory. Disagreements must be handled with dignity and in line with Islamic teachings.</p>
-                    <p>3. Content shared must be educational, beneficial, and aligned with the Quran and Sunnah.</p>
-                    <p>4. Any form of offensive language, disrespect, or unethical behavior will not be tolerated.</p>
-                    <p>5. Members must prioritize promoting positive Islamic knowledge and maintaining unity within the group.</p>
-                    <p>6. Confidentiality and privacy of all discussions must be respected.</p>
-                    <p>7. Uphold Islamic etiquette in all interactions.</p>
+                    <p>1. All members must respect Islamic principles and group guidelines.</p>
+                    <p>2. Content shared must be related to Islamic teachings and beneficial knowledge.</p>
+                    <p>3. Members must maintain confidentiality within the group.</p>
                     <br>
-                    <input type="checkbox" id="agreeCheckbox" onclick="toggleRegisterButton()"> I agree to all terms and conditions
-                    <br><br>
-                    <button id="proceedButton" style="display:none;" onclick="window.location.href='https://form.jotform.com/242356435496565'">Proceed to Registration</button>
+                    <button onclick="showHomePage()">Go Back to Home</button>
                 </div>
             `;
         }
 
-        function toggleRegisterButton() {
-            const checkbox = document.getElementById("agreeCheckbox");
-            const proceedButton = document.getElementById("proceedButton");
-            proceedButton.style.display = checkbox.checked ? "inline-block" : "none";
-        }
-
-        function showAboutUs() {
-            alert('About Us: Islam Youth Group is a community of young Muslims dedicated to spiritual growth, knowledge sharing, and upholding Islamic values. We aim to foster unity, understanding, and active participation in the Islamic way of life.');
-        }
-
-        function showContact() {
-            const callButton = document.createElement("button");
-            callButton.textContent = "Call Now";
-            callButton.style.padding = "15px";
-            callButton.style.fontSize = "20px";
-            callButton.style.backgroundColor = "green";
-            callButton.style.color = "white";
-            callButton.style.border = "none";
-            callButton.style.cursor = "pointer";
-            callButton.addEventListener("click", function() {
-                navigator.vibrate(100);
-                window.location.href = "tel:0921170188";
-            });
-            document.body.innerHTML = "";
-            document.body.appendChild(callButton);
-        }
-
-        function showGiveIdea() {
-            document.body.innerHTML = `
-                <div style="padding: 20px; background-color: rgba(255, 255, 255, 0.9); margin: 50px;">
-                    <h2>Submit Your Idea</h2>
-                    <label for="userName">Name:</label><br>
-                    <input type="text" id="userName" name="userName" required><br><br>
-                    <label for="userIdea">Your Idea:</label><br>
-                    <textarea id="userIdea" name="userIdea" required></textarea><br><br>
-                    <button onclick="submitIdea()">Submit Idea</button>
-                </div>
-            `;
-        }
-
-        function submitIdea() {
-            const name = document.getElementById("userName").value;
-            const idea = document.getElementById("userIdea").value;
-            if (name && idea) {
-                // Simulate sending the idea (you can integrate with a backend to store this data)
-                alert("Your idea has been submitted!");
-
-                // Redirect to the privacy page to see the user message
-                showPrivacyPage();
-
-                // Append the submitted idea under User Messages
-                const userMessages = document.getElementById("userMessages");
-                const newMessage = document.createElement("div");
-                newMessage.innerHTML = `<strong>${name} (0921170188)</strong>: ${idea}`;
-                userMessages.appendChild(newMessage);
-            } else {
-                alert("Please fill in all fields before submitting.");
-            }
+        function showHomePage() {
+            location.reload();
         }
 
         function displayUserMessages() {
-            // Here you can load previously submitted ideas from storage or a database
-            // For demonstration, let's add a dummy message:
-            const userMessages = document.getElementById("userMessages");
-            const dummyMessage = document.createElement("div");
-            dummyMessage.innerHTML = `<strong>John Doe (0921170188)</strong>: Example of an idea submitted.`;
-            userMessages.appendChild(dummyMessage);
+            const userMessagesDiv = document.getElementById("userMessages");
+            if (userMessagesDiv) {
+                const storedMessages = JSON.parse(localStorage.getItem("userMessages")) || [];
+                storedMessages.forEach(message => {
+                    const messageElement = document.createElement("p");
+                    messageElement.textContent = message;
+                    userMessagesDiv.appendChild(messageElement);
+                });
+            }
+        }
+
+        function showGiveIdea() {
+            const idea = prompt("Submit your idea:");
+            if (idea) {
+                const storedIdeas = JSON.parse(localStorage.getItem("userIdeas")) || [];
+                storedIdeas.push(idea);
+                localStorage.setItem("userIdeas", JSON.stringify(storedIdeas));
+                alert("Thank you for your idea! Redirecting to home page...");
+                showHomePage();
+            }
         }
     </script>
 </body>
