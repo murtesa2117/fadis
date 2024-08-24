@@ -45,22 +45,95 @@
             background-color: darkblue;
             padding: 15px 30px;
         }
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+        }
+        #languageSelector {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
     </style>
 </head>
 <body>
-    <div class="welcome-banner">
-        Welcome to Islam Youth Group
+    <!-- Language Selector -->
+    <div id="languageSelector">
+        <select onchange="translatePage(this.value)">
+            <option value="en">English</option>
+            <option value="ar">Arabic</option>
+        </select>
     </div>
 
-    <div class="button-container">
-        <!-- Image button for password protection -->
-        <button class="button privacy-button" onclick="showPasswordPrompt()"> </button>
+    <!-- Sidebar -->
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#" onclick="showAboutUs()">About Us</a>
+        <a href="#" onclick="showContact()">Contact Us</a>
+        <a href="#" onclick="showGiveIdea()">Give Your Idea</a>
+    </div>
 
-        <!-- Register button that links to the terms and conditions page -->
-        <button class="button register-button" onclick="showTerms()">Register</button>
+    <div id="main">
+        <div class="welcome-banner">
+            Welcome to Islam Youth Group
+            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+        </div>
+
+        <div class="button-container">
+            <!-- Image button for password protection -->
+            <button class="button privacy-button" onclick="showPasswordPrompt()"> </button>
+
+            <!-- Register button that links to the terms and conditions page -->
+            <button class="button register-button" onclick="showTerms()">Register</button>
+        </div>
     </div>
 
     <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.width = "0";
+            document.getElementById("main").style.marginLeft= "0";
+        }
+
+        function translatePage(lang) {
+            // Implement your translation logic here
+            alert('Page will be translated to ' + lang);
+        }
+
         function showPasswordPrompt() {
             const password = prompt("Enter the code or password:");
             if (password === "All@fadis2117") {
@@ -81,9 +154,12 @@
                     <p>5. Any form of hate speech, disrespect, or backbiting is strictly prohibited.</p>
                     <p>6. Uphold Islamic manners in all interactions, whether verbal or written.</p>
                     <br>
+                    <h3>User Messages</h3>
+                    <div id="userMessages"></div>
                     <button onclick="window.location.href='https://docs.google.com/spreadsheets/d/1cIB-l6ACoFWgbOtoFfK2oBEZXOsUO6DDtP-lCnBQCEg/edit?gid=952276604#gid=952276604'">Users Who Registered</button>
                 </div>
             `;
+            displayUserMessages();
         }
 
         function showTerms() {
@@ -110,7 +186,69 @@
             const proceedButton = document.getElementById("proceedButton");
             proceedButton.style.display = checkbox.checked ? "inline-block" : "none";
         }
+
+        function showAboutUs() {
+            alert('About Us: Islam Youth Group is a community of young Muslims dedicated to spiritual growth, knowledge sharing, and upholding Islamic values. We aim to foster unity, understanding, and active participation in the Islamic way of life.');
+        }
+
+        function showContact() {
+            const callButton = document.createElement("button");
+            callButton.textContent = "Call Now";
+            callButton.style.padding = "15px";
+            callButton.style.fontSize = "20px";
+            callButton.style.backgroundColor = "green";
+            callButton.style.color = "white";
+            callButton.style.border = "none";
+            callButton.style.cursor = "pointer";
+            callButton.addEventListener("click", function() {
+                navigator.vibrate(100);
+                window.location.href = "tel:0921170188";
+            });
+            document.body.innerHTML = "";
+            document.body.appendChild(callButton);
+        }
+
+        function showGiveIdea() {
+            document.body.innerHTML = `
+                <div style="padding: 20px; background-color: rgba(255, 255, 255, 0.9); margin: 50px;">
+                    <h2>Submit Your Idea</h2>
+                    <label for="userName">Name:</label><br>
+                    <input type="text" id="userName" name="userName" required><br><br>
+                    <label for="userIdea">Your Idea:</label><br>
+                    <textarea id="userIdea" name="userIdea" required></textarea><br><br>
+                    <button onclick="submitIdea()">Submit Idea</button>
+                </div>
+            `;
+        }
+
+        function submitIdea() {
+            const name = document.getElementById("userName").value;
+            const idea = document.getElementById("userIdea").value;
+            if (name && idea) {
+                // Simulate sending the idea (you can integrate with a backend to store this data)
+                alert("Your idea has been submitted!");
+
+                // Redirect to the privacy page to see the user message
+                showPrivacyPage();
+
+                // Append the submitted idea under User Messages
+                const userMessages = document.getElementById("userMessages");
+                const newMessage = document.createElement("div");
+                newMessage.innerHTML = `<strong>${name} (0921170188)</strong>: ${idea}`;
+                userMessages.appendChild(newMessage);
+            } else {
+                alert("Please fill in all fields before submitting.");
+            }
+        }
+
+        function displayUserMessages() {
+            // Here you can load previously submitted ideas from storage or a database
+            // For demonstration, let's add a dummy message:
+            const userMessages = document.getElementById("userMessages");
+            const dummyMessage = document.createElement("div");
+            dummyMessage.innerHTML = `<strong>John Doe (0921170188)</strong>: Example of an idea submitted.`;
+            userMessages.appendChild(dummyMessage);
+        }
     </script>
 </body>
 </html>
-
