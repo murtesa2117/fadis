@@ -104,6 +104,25 @@
             color: white;
             cursor: pointer;
         }
+
+        #termsSection,
+        #ideaForm,
+        #contactSection,
+        #chatRoom,
+        #privacyPage {
+            display: none;
+        }
+
+        #termsSection input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .success-message {
+            color: green;
+            font-size: 1.2em;
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -116,48 +135,46 @@
             <option value="om">Afaan Oromoo</option>
             <option value="ar">Arabic</option>
             <option value="am">Amharic</option>
-            <!-- Add more languages as needed -->
         </select>
     </div>
 
     <!-- Sidebar -->
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#" onclick="showAboutUs()">About Us</a>
-        <a href="#" onclick="showContact()">Contact Us</a>
-        <a href="#" onclick="showGiveIdea()">Give Your Idea</a>
-        <a href="#" onclick="showChatRoom()">Chat Room</a>
+        <a href="javascript:void(0)" onclick="showAboutUs()">About Us</a>
+        <a href="javascript:void(0)" onclick="showContact()">Contact Us</a>
+        <a href="javascript:void(0)" onclick="showGiveIdea()">Give Your Idea</a>
+        <a href="javascript:void(0)" onclick="showChatRoom()">Chat Room</a>
     </div>
 
     <div id="main">
         <div class="welcome-banner" id="welcomeMessage">
             Welcome to Islam Youth Group
-            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>
         </div>
 
         <div class="button-container">
             <!-- Image button for password protection -->
-            <button class="button privacy-button" onclick="showPasswordPrompt()"> </button>
+            <button class="button privacy-button" onclick="showPasswordPrompt()"></button>
 
             <!-- Register button that links to the terms and conditions page -->
             <button class="button register-button" id="registerButton" onclick="showTerms()">Register</button>
         </div>
 
         <!-- Terms and Conditions Section -->
-        <div id="termsSection" style="display: none;">
+        <div id="termsSection">
             <h3 id="termsTitle">Terms and Conditions</h3>
             <div id="termsContent">
                 <p>1. All members must adhere to the principles of Islamic Sharia.</p>
                 <p>2. Respect for each member's religious and cultural views is mandatory.</p>
                 <p>3. Any content shared must align with Islamic values and teachings.</p>
-                <!-- Add more terms as needed -->
             </div>
-            <input type="checkbox" id="agreeTerms"> <label id="agreeTermsLabel" for="agreeTerms">I agree to all terms and conditions</label><br><br>
+            <input type="checkbox" id="agreeTerms" onchange="toggleProceedButton()"> <label id="agreeTermsLabel" for="agreeTerms">I agree to all terms and conditions</label><br><br>
             <button id="proceedButton" disabled onclick="redirectToRegistration()">Proceed to Registration</button>
         </div>
 
         <!-- Idea Submission Form -->
-        <div id="ideaForm" style="display: none;">
+        <div id="ideaForm">
             <h3>Submit Your Idea</h3>
             <form onsubmit="submitIdea(event)">
                 <label for="name">Name:</label>
@@ -168,25 +185,25 @@
                 <textarea id="idea" name="idea" required></textarea><br><br>
                 <button type="submit">Submit Idea</button>
             </form>
-            <div id="successMessage" style="display: none; color: green;">
+            <div id="successMessage" class="success-message" style="display: none;">
                 Your idea was submitted successfully! Thank you.
             </div>
         </div>
 
         <!-- Contact Us Section with Vibrate Phone Icon -->
-        <div id="contactSection" style="display: none;">
+        <div id="contactSection">
             <h3>Contact Us</h3>
             <button class="vibrate-button" onclick="openPhoneApp()">Call Us</button>
         </div>
 
         <!-- Chat Room -->
-        <div id="chatRoom" style="display: none;">
+        <div id="chatRoom">
             <h3>Chat Room - Real-Time Conversations</h3>
             <!-- Chat room interface will be added here -->
         </div>
 
         <!-- Admin-Only Area for Viewing Submitted Ideas -->
-        <div id="privacyPage" style="display: none;">
+        <div id="privacyPage">
             <h3>Privacy Page - Admin Access Only</h3>
             <div id="userMessages" style="background-color: green; padding: 10px;">
                 <h4>User Messages</h4>
@@ -242,79 +259,86 @@
             document.getElementById("main").style.marginLeft = "0";
         }
 
-        function showAboutUs() {
-            alert("We are an Islamic youth group dedicated to sharing knowledge, supporting each other, and promoting Islamic values.");
+        function translatePage(lang) {
+            document.getElementById("welcomeMessage").textContent = translations[lang].welcomeMessage;
+            document.getElementById("registerButton").textContent = translations[lang].registerButton;
+            document.querySelector(".sidebar a:nth-child(2)").textContent = translations[lang].aboutUs;
+            document.querySelector(".sidebar a:nth-child(3)").textContent = translations[lang].contactUs;
+            document.querySelector(".sidebar a:nth-child(4)").textContent = translations[lang].giveIdea;
+            document.querySelector(".sidebar a:nth-child(5)").textContent = translations[lang].chatRoom;
+            document.getElementById("termsTitle").textContent = translations[lang].termsTitle;
+            document.getElementById("termsContent").innerHTML = translations[lang].termsContent;
+            document.getElementById("proceedButton").textContent = translations[lang].proceedButton;
+            document.getElementById("agreeTermsLabel").textContent = translations[lang].agreeTerms;
         }
 
-        function showContact() {
-            document.getElementById("contactSection").style.display = "block";
-        }
-
-        function showGiveIdea() {
-            document.getElementById("ideaForm").style.display = "block";
-        }
-
-        function showChatRoom() {
-            document.getElementById("chatRoom").style.display = "block";
+        function toggleProceedButton() {
+            document.getElementById("proceedButton").disabled = !document.getElementById("agreeTerms").checked;
         }
 
         function showTerms() {
+            hideAllSections();
             document.getElementById("termsSection").style.display = "block";
         }
 
-        function translatePage(language) {
-            const content = translations[language];
-            if (content) {
-                document.getElementById("welcomeMessage").textContent = content.welcomeMessage;
-                document.getElementById("registerButton").textContent = content.registerButton;
-                document.querySelector('.sidebar a[href="#"]').textContent = content.aboutUs;
-                document.querySelector('.sidebar a[href="#contact"]').textContent = content.contactUs;
-                document.querySelector('.sidebar a[href="#give"]').textContent = content.giveIdea;
-                document.querySelector('.sidebar a[href="#chat"]').textContent = content.chatRoom;
-                document.getElementById("termsTitle").textContent = content.termsTitle;
-                document.getElementById("termsContent").innerHTML = content.termsContent;
-                document.getElementById("proceedButton").textContent = content.proceedButton;
-                document.getElementById("agreeTermsLabel").textContent = content.agreeTerms;
-            }
+        function showGiveIdea() {
+            hideAllSections();
+            document.getElementById("ideaForm").style.display = "block";
         }
 
-        function showPasswordPrompt() {
-            const password = prompt("Enter admin password:");
-            if (password === "admin123") {
-                document.getElementById("privacyPage").style.display = "block";
-                // Display submitted ideas here
-                document.getElementById("userMessages").innerHTML = "<p>No ideas submitted yet.</p>";
-            } else {
-                alert("Incorrect password.");
-            }
+        function showContact() {
+            hideAllSections();
+            document.getElementById("contactSection").style.display = "block";
+        }
+
+        function showChatRoom() {
+            hideAllSections();
+            document.getElementById("chatRoom").style.display = "block";
+        }
+
+        function redirectToRegistration() {
+            alert("Redirecting to the registration page...");
+        }
+
+        function openPhoneApp() {
+            navigator.vibrate(200); // Vibrates for 200ms
+            window.location.href = "tel:+1234567890"; // Pre-filled phone number
+        }
+
+        function hideAllSections() {
+            document.getElementById("termsSection").style.display = "none";
+            document.getElementById("ideaForm").style.display = "none";
+            document.getElementById("contactSection").style.display = "none";
+            document.getElementById("chatRoom").style.display = "none";
+            document.getElementById("privacyPage").style.display = "none";
         }
 
         function submitIdea(event) {
             event.preventDefault();
-            // Here you would normally save the idea to your database
+            const idea = {
+                name: document.getElementById("name").value,
+                phone: document.getElementById("phone").value,
+                idea: document.getElementById("idea").value
+            };
+            // In a real application, send this data to the server
+            console.log("Submitted Idea:", idea);
             document.getElementById("successMessage").style.display = "block";
             setTimeout(() => {
-                document.getElementById("ideaForm").style.display = "none";
                 document.getElementById("successMessage").style.display = "none";
-            }, 2000);
+                showTerms();
+            }, 3000);
         }
 
-        function openPhoneApp() {
-            const phoneNumber = "+251921170188"; // Replace with the desired phone number
-            window.location.href = `tel:${phoneNumber}`;
-            if (navigator.vibrate) {
-                navigator.vibrate(200); // Vibrate for 200ms
+        function showPasswordPrompt() {
+            const password = prompt("Enter the admin password:");
+            if (password === "21170188") { // Change to your admin password
+                document.getElementById("privacyPage").style.display = "block";
+            } else {
+                alert("Incorrect password!");
             }
         }
-
-        function redirectToRegistration() {
-            window.location.href = "registration-page.html";
-        }
-
-        document.getElementById("agreeTerms").addEventListener("change", function () {
-            document.getElementById("proceedButton").disabled = !this.checked;
-        });
     </script>
 </body>
 
 </html>
+
