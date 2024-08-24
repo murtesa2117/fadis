@@ -8,7 +8,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-image: url('background.jpg');
+            background-image: url('background.jpg'); /* Background image */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -33,7 +33,7 @@
             color: white;
         }
         .privacy-button {
-            background-image: url('button_image.png');
+            background-image: url('button_image.png'); /* Image for the button */
             background-size: cover;
             background-position: center;
             width: 250px;
@@ -75,38 +75,12 @@
             font-size: 36px;
             margin-left: 50px;
         }
-        .sidebar .language-selector {
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 25px;
-            color: #818181;
-            display: block;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-        .sidebar .language-selector:hover {
-            color: #f1f1f1;
-        }
-        .sidebar .language-dropdown {
-            display: none;
-            padding-left: 32px;
-        }
-        .sidebar .language-dropdown select {
-            font-size: 20px;
-            padding: 10px;
-        }
         #main {
             transition: margin-left .5s;
             padding: 16px;
         }
-        #userMessagesButton {
-            display: none;
-            margin-top: 20px;
-            background-color: green;
-            padding: 15px;
-            color: white;
-            border: none;
-            cursor: pointer;
+        #languageSelector {
+            display: none; /* Hidden as it's now in the sidebar */
         }
     </style>
 </head>
@@ -117,15 +91,14 @@
         <a href="#" onclick="showAboutUs()">About Us</a>
         <a href="#" onclick="showContact()">Contact Us</a>
         <a href="#" onclick="showGiveIdea()">Give Your Idea</a>
-        <a class="language-selector" onclick="toggleLanguageDropdown()">Language</a>
-        <div class="language-dropdown" id="languageDropdown">
-            <select onchange="changeLanguage(this.value)">
+        <a href="#">
+            <select onchange="translatePage(this.value)">
                 <option value="en">English</option>
                 <option value="om">Afaan Oromoo</option>
                 <option value="am">Amharic</option>
                 <option value="ar">Arabic</option>
             </select>
-        </div>
+        </a>
     </div>
 
     <div id="main">
@@ -141,8 +114,6 @@
             <!-- Register button that links to the terms and conditions page -->
             <button class="button register-button" onclick="showTerms()">Register</button>
         </div>
-
-        <button id="userMessagesButton" onclick="showUserMessages()">User Messages</button>
     </div>
 
     <script>
@@ -156,37 +127,41 @@
             document.getElementById("main").style.marginLeft= "0";
         }
 
-        function toggleLanguageDropdown() {
-            const dropdown = document.getElementById("languageDropdown");
-            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-        }
+        function translatePage(lang) {
+            const elementsToTranslate = document.querySelectorAll('h2, p, label, button, div.welcome-banner');
 
-        function changeLanguage(lang) {
-            if (lang === "om") {
-                translatePageToOromo();
-            } else {
-                alert('Page will be translated to ' + lang);
+            const translations = {
+                om: {
+                    'Welcome to Islam Youth Group': 'Baga Nagaan Dhuftan Garee Dargaggoota Islaamaa',
+                    'About Us: Islam Youth Group is a community of young Muslims dedicated to spiritual growth, knowledge sharing, and upholding Islamic values. We aim to foster unity, understanding, and active participation in the Islamic way of life.':
+                        'Gareen Dargaggoota Islaamaa gargaarsa, qoodinsa beekumsa, fi kabaja hafuura Islaamaa irratti xiyyeeffata. Galmi keenya tokkummaa, waliif-yaaduu, fi hirmaannaa seera Islaamaa guddisuu dha.',
+                    'Call Now': 'Akkuma Amma Bilbili',
+                    'Submit Your Idea': 'Yaada Keessan Galii',
+                    'Name:': 'Maqaa:',
+                    'Your Idea:': 'Yaada Keessan:',
+                    'Users Who Registered': 'Warra Galmeessan',
+                    'User Messages': 'Ergaa Namootaa',
+                    'I agree to all terms and conditions': 'Waliin Galuu Kakuu fi Seerota Hunda',
+                    'Proceed to Registration': 'Galmeessa Keessaatti Ce’aa',
+                    'Privacy and Rules': 'Icitiifi Seerota',
+                    'Terms and Conditions': 'Waliin Galtee fi Seerota'
+                },
+                am: {
+                    // Amharic translations would go here...
+                },
+                ar: {
+                    // Arabic translations would go here...
+                }
+            };
+
+            if (translations[lang]) {
+                elementsToTranslate.forEach(el => {
+                    const text = el.textContent.trim();
+                    if (translations[lang][text]) {
+                        el.textContent = translations[lang][text];
+                    }
+                });
             }
-        }
-
-        function translatePageToOromo() {
-            document.body.innerHTML = `
-                <div style="padding: 20px; background-color: rgba(255, 255, 255, 0.9); margin: 50px;">
-                    <h2>Akkaataa Fi Heera</h2>
-                    <p>1. Miseensota hunda kabajuuf fi ilaalchaan isaanii Islaamummaa waliin walsimuu qaba.</p>
-                    <p>2. Waan qixa Qur'aanaa fi Sunnah waliin hidhata qabu qooduu.</p>
-                    <p>3. Waan sirrii fi amanamummaa qabuu keessa jiraachuu.</p>
-                    <p>4. Waan rakkinaa fi jibba miidhaa akka hin taane mirkaneessuu.</p>
-                    <p>5. Hawaasumma fi walitti dhufeenya keessatti xiyyeeffannoo qabaachuu.</p>
-                    <p>6. Aangoo Islaamummaa keessatti walitti dhufeenya gochuu.</p>
-                    <br>
-                    <h3>Ergaa Miseensotaa</h3>
-                    <div id="userMessages"></div>
-                    <button onclick="window.location.href='https://docs.google.com/spreadsheets/d/1cIB-l6ACoFWgbOtoFfK2oBEZXOsUO6DDtP-lCnBQCEg/edit?gid=952276604#gid=952276604'">Miseensota Galmeessanii</button>
-                </div>
-                <button id="backToHome" onclick="showHomePage()">Mana Gahuu</button>
-            `;
-            displayUserMessages();
         }
 
         function showPasswordPrompt() {
@@ -212,8 +187,8 @@
                     <h3>User Messages</h3>
                     <div id="userMessages"></div>
                     <button onclick="window.location.href='https://docs.google.com/spreadsheets/d/1cIB-l6ACoFWgbOtoFfK2oBEZXOsUO6DDtP-lCnBQCEg/edit?gid=952276604#gid=952276604'">Users Who Registered</button>
+                    <button class="button green-button" onclick="showUserMessages()">User Messages</button>
                 </div>
-                <button id="userMessagesButton" style="display: inline-block;">User Messages</button>
             `;
             displayUserMessages();
         }
@@ -222,40 +197,51 @@
             document.body.innerHTML = `
                 <div style="padding: 20px; background-color: rgba(255, 255, 255, 0.9); margin: 50px;">
                     <h2>Terms and Conditions</h2>
-                    <p>1. All members must respect Islamic principles and group guidelines.</p>
-                    <p>2. Content shared must be related to Islamic teachings and beneficial knowledge.</p>
-                    <p>3. Members must maintain confidentiality within the group.</p>
-                    <br>
-                    <button onclick="showHomePage()">Go Back to Home</button>
+                    <p>1. All members must adhere to the principles of Islamic Sharia.</p>
+                    <p>2. Respect towards fellow members is mandatory. Disagreements must be handled with dignity and in line with Islamic teachings.</p>
+                    <p>3. Content shared must be educational, beneficial, and aligned with the Quran and Sunnah.</p>
+                    <p>4. Any form of offensive language, disrespect, or unethical behavior will not be tolerated.</p>
+                    <p>5. Members must prioritize promoting positive Islamic knowledge and maintaining unity within the group.</p>
+                    <button onclick="window.location.href='registration.html'">Proceed to Registration</button>
                 </div>
             `;
         }
 
-        function showHomePage() {
-            location.reload();
+        function showGiveIdea() {
+            document.body.innerHTML = `
+                <div style="padding: 20px; background-color: rgba(255, 255, 255, 0.9); margin: 50px;">
+                    <h2>Submit Your Idea</h2>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" placeholder="Enter your name"><br><br>
+                    <label for="idea">Your Idea:</label>
+                    <textarea id="idea" placeholder="Enter your idea"></textarea><br><br>
+                    <button onclick="submitIdea()">Submit</button>
+                </div>
+            `;
+        }
+
+        function submitIdea() {
+            const name = document.getElementById('name').value;
+            const idea = document.getElementById('idea').value;
+            if (name && idea) {
+                localStorage.setItem('idea_' + Date.now(), JSON.stringify({ name, idea }));
+                alert('Thank you for your submission!');
+                window.location.href = 'index.html'; // Redirects back to the home page
+            } else {
+                alert('Please fill out all fields.');
+            }
         }
 
         function displayUserMessages() {
-            const userMessagesDiv = document.getElementById("userMessages");
-            if (userMessagesDiv) {
-                const storedMessages = JSON.parse(localStorage.getItem("userMessages")) || [];
-                storedMessages.forEach(message => {
-                    const messageElement = document.createElement("p");
-                    messageElement.textContent = message;
-                    userMessagesDiv.appendChild(messageElement);
-                });
-            }
-        }
-
-        function showGiveIdea() {
-            const idea = prompt("Submit your idea:");
-            if (idea) {
-                const storedIdeas = JSON.parse(localStorage.getItem("userIdeas")) || [];
-                storedIdeas.push(idea);
-                localStorage.setItem("userIdeas", JSON.stringify(storedIdeas));
-                alert("Thank you for your idea! Redirecting to home page...");
-                showHomePage();
-            }
+            const messageContainer = document.getElementById('userMessages');
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('idea_')) {
+                    const { name, idea } = JSON.parse(localStorage.getItem(key));
+                    const messageElement = document.createElement('div');
+                    messageElement.innerHTML = `<strong>${name}:</strong> ${idea}`;
+                    messageContainer.appendChild(messageElement);
+                }
+            });
         }
     </script>
 </body>
